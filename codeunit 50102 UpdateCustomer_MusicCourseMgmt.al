@@ -32,7 +32,7 @@ codeunit 50102 UpdateCustomer_MusicCourseMgmt
         end
         else begin
             teacherInstrument.Init;
-            teacherInstrument.MusicTeacherID := Customer."No.";
+            teacherInstrument.MusicTeacherID := Customer.MusicTeacherID;
             teacherInstrument.InstrumentID := Customer.InstrumentID;
             teacherInstrument.Insert;
         end;
