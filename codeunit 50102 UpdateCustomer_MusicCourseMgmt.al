@@ -3,13 +3,14 @@ codeunit 50102 UpdateCustomer_MusicCourseMgmt
     procedure OnAfterModifyCustomerRecord(var Customer: Record Customer)
     var
         studentInstrument: Record StudentInstrument;
-        teacherInstrument: Record TeacherInstrument;
+    // teacherInstrument: Record TeacherInstrument;
     begin
         // Update student instruments table
         studentInstrument.SetRange(MusicStudentID, Customer."No.");
-        studentInstrument.SetRange(InstrumentID, '');
-        if studentInstrument.FindSet() then begin
+        studentInstrument.SetRange(InstrumentID, Customer.InstrumentID);
+        if studentInstrument.Find('-') then begin
             repeat
+                studentInstrument.MusicStudentID := Customer."No.";
                 studentInstrument.InstrumentID := Customer.InstrumentID;
                 studentInstrument.Modify;
             until studentInstrument.Next = 0;
@@ -19,22 +20,6 @@ codeunit 50102 UpdateCustomer_MusicCourseMgmt
             studentInstrument.MusicStudentID := Customer."No.";
             studentInstrument.InstrumentID := Customer.InstrumentID;
             studentInstrument.Insert;
-        end;
-
-        // Update teacher instruments table
-        teacherInstrument.SetRange(MusicTeacherID, Customer.MusicTeacherID);
-        teacherInstrument.SetRange(InstrumentID, '');
-        if teacherInstrument.FindSet() then begin
-            repeat
-                teacherInstrument.InstrumentID := Customer.InstrumentID;
-                teacherInstrument.Modify;
-            until teacherInstrument.Next = 0;
-        end
-        else begin
-            teacherInstrument.Init;
-            teacherInstrument.MusicTeacherID := Customer.MusicTeacherID;
-            teacherInstrument.InstrumentID := Customer.InstrumentID;
-            teacherInstrument.Insert;
         end;
     end;
 }
